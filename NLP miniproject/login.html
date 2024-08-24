@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderly Care App - Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="form-container">
+            <h2>Login</h2>
+            <form onsubmit="return validateLoginForm()">
+                <label for="login-username">Username:</label>
+                <input type="text" id="login-username" required>
+
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" required>
+
+                <button type="submit" class="btn">Login</button>
+                <p>Don't have an account? <a href="signin.html">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

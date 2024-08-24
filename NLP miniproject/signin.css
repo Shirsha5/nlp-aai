@@ -1,0 +1,107 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fc;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Adjusted for full view */
+    overflow-y: auto;
+  }
+  
+  .signup-container {
+    width: 100%;
+    max-width: 400px; /* Adjusted to better fit smaller screens */
+    background-color: white;
+    padding: 15px; /* Reduced padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px; /* Added margin for breathing space */
+  }
+  
+  h2 {
+    text-align: center;
+    color: #5C7AEA;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"] {
+    width: 100%;
+    padding: 8px; /* Adjusted padding */
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  input[type="text"]:focus,
+  input[type="password"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus,
+  input[type="number"]:focus {
+    outline: none;
+    border-color: #5C7AEA;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #5C7AEA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #4b64d0;
+  }
+  
+  p {
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  p a {
+    color: #5C7AEA;
+    text-decoration: none;
+  }
+  
+  p a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Media query for very small screens */
+  @media (max-width: 480px) {
+    .signup-container {
+      padding: 10px; /* Further reduced padding */
+    }
+  
+    h2 {
+      font-size: 20px;
+    }
+  
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"] {
+      font-size: 14px; /* Reduced font size for smaller screens */
+    }
+  }
+  
