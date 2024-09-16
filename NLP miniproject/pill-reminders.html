@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovative Pill Reminder</title>
+    <link rel="stylesheet" href="pill-reminders.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pill Reminder Dashboard</h1>
+        <div class="dashboard">
+            <!-- Timeline View -->
+            <div class="timeline">
+                <h2>Today's Schedule</h2>
+                <div class="timeline-container" id="timelineContainer">
+                    <!-- Dynamic timeline items will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Pill Input Form -->
+            <form id="pillForm">
+                <div class="input-group">
+                    <label for="pillName">Pill Name:</label>
+                    <input type="text" id="pillName" placeholder="Enter pill name">
+                </div>
+                <div class="input-group">
+                    <label for="dosage">Dosage Amount:</label>
+                    <input type="text" id="dosage" placeholder="e.g., 50mg">
+                </div>
+                <div class="input-group">
+                    <label for="frequency">Frequency:</label>
+                    <select id="frequency">
+                        <option value="1">Once a day</option>
+                        <option value="2">Twice a day</option>
+                        <option value="3">Three times a day</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="reminderTime">Reminder Time:</label>
+                    <input type="time" id="reminderTime">
+                </div>
+                <div class="input-group">
+                    <label for="status">Last Dose Status:</label>
+                    <select id="status">
+                        <option value="taken">Taken</option>
+                        <option value="missed">Missed</option>
+                    </select>
+                </div>
+                <button type="button" onclick="addPill()">Add Reminder</button>
+            </form>
+
+            <!-- Health Tracking -->
+            <div class="health-tracking">
+                <h2>Health Tracking</h2>
+                <p>How do you feel today?</p>
+                <textarea id="moodTracker" placeholder="Add notes about your symptoms, mood, etc."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script src="pill-reminders.js"></script>
+</body>
+</html>
