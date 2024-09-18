@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderly Care App - Sign Up</title>
+    <link rel="stylesheet" href="signin.css">
+</head>
+<body>
+    <div class="signup-container">
+        <div class="form-container">
+            <h2>Sign Up</h2>
+            <form onsubmit="return validateSignUpForm()">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" required>
+
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" required>
+
+                <label for="age">Age:</label>
+                <input type="number" id="age" min="1" required>
+
+                <label for="gender">Gender (M/F):</label>
+                <input type="text" id="gender" pattern="[MF]" title="Gender must be M or F" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+
+                <label for="contact">Contact:</label>
+                <input type="tel" id="contact" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number" required>
+
+                <label for="username">Username:</label>
+                <input type="text" id="username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" required>
+
+                <button type="submit" class="btn">Sign Up</button>
+                <p>Already have an account? <a href="login.html">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="signin.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f9fc;
+  color: #333;
+}
+
+header {
+  background-color: #5C7AEA;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+header h1 {
+  margin: 0;
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #d1d1d1;
+}
+
+.login-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+#voice-command-container {
+  text-align: center;
+  margin: 30px 0;
+}
+
+#main-content {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.content-box {
+  background-color: white;
+  width: 30%;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  min-height: 300px; /* Increased height */
+}
+
+.content-box:hover {
+  transform: translateY(-5px);
+}
+
+h2 {
+  color: #5C7AEA;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#reminder-box, #assistant-output, #community-updates {
+  background-color: #f0f4f7;
+  padding: 15px;
+  border-radius: 10px;
+  min-height: 120px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+  background-color: #5C7AEA;
+  color: white;
+  padding: 16px 32px; /* Increased padding for bigger button */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px; /* Increased font size */
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #4b64d0;
+}
+
+footer {
+  text-align: center;
+  padding: 10px 0;
+  background-color: #5C7AEA;
+  color: white;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
