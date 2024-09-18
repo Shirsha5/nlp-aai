@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Community Updates</title>
+  <link rel="stylesheet" href="community-updates.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Community Updates</h1>
+      <p>Manage updates for the community. Add, edit, or remove updates as needed.</p>
+    </div>
+    
+    <div class="update-input">
+      <input type="text" placeholder="Update Title" class="input-field js-title-input">
+      <textarea placeholder="Update Description" class="textarea-field js-description-input"></textarea>
+      <button class="btn add-btn" onclick="addUpdate()">Add Update</button>
+    </div>
+
+    <div class="updates-list js-updates-list">
+      <!-- Dynamically generated updates will appear here -->
+    </div>
+  </div>
+
+  <script src="community-updates.js"></script>
+</body>
+</html>
