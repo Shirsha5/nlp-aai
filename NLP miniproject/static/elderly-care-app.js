@@ -1,81 +1,98 @@
-// Add event listeners to the 'speak-btn'
-document.getElementById('speak-btn').addEventListener('click', function() {
-    captureVoiceCommand();
-});
+<script>
+    document.getElementById('speak-btn').addEventListener('click', () => {
+        captureVoiceCommand();
+    });
 
-document.getElementById('speak-btn').addEventListener('click', function() {
-    console.log("Button clicked!");
-    activateVoiceCommand();
-});
-
-// Function to capture the voice command using speech recognition
-function captureVoiceCommand() {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    
-    recognition.lang = 'en-US'; // Set the language of the speech recognition
-    recognition.interimResults = false; // Disable interim results
-    
-    recognition.onstart = function() {
-        console.log("Voice recognition started. Try speaking into the microphone.");
-    };
-
-    recognition.onspeechend = function() {
-        recognition.stop();
-    };
-
-    recognition.onresult = function(event) {
-        const command = event.results[0][0].transcript;
-        console.log("Voice command received: " + command);
-
-        // Send the command to the backend
-        sendVoiceCommandToBackend(command);
-    };
-
-    recognition.onerror = function(event) {
-        console.error('Speech recognition error:', event.error);
-    };
-
-    // Start speech recognition
-    recognition.start();
-}
-
-// Function to send the recognized voice command to the Flask backend
-function sendVoiceCommandToBackend(command) {
-    fetch('/process_voice', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ command: command })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Handle the response from the backend
-        console.log(data.message);
-        document.getElementById('assistant-output').textContent = data.message;
-        
-        // If the command includes adding a reminder, update the UI with the pill info
-        if (data.message.includes("Reminder set")) {
-            addPillToTimeline(command); // Custom function to add reminder visually
+    function captureVoiceCommand() {
+        if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+            alert('Speech Recognition API is not supported in this browser.');
+            return;
         }
-    })
-    .catch(error => console.error('Error sending voice command:', error));
-}
 
-// Function to visually add the pill reminder to the timeline
-function addPillToTimeline(command) {
-    const pillInfo = command.replace('set reminder to', '').trim(); // Extract the pill info from command
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
-    const timelineContainer = document.getElementById('timelineContainer');
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
 
-    const timelineItem = document.createElement('div');
-    timelineItem.className = 'timeline-item';
+        recognition.onstart = function() {
+            console.log("Voice recognition started. Please speak into the microphone.");
+            speakMessage("Voice recognition started. Please speak into the microphone.");
+            document.getElementById('assistant-output').textContent = "Listening...";
+        };
 
-    timelineItem.innerHTML = `
-        <div class="pill-time">TBD</div>
-        <div>${pillInfo}</div>
-        <div class="status">Active</div>
-    `;
+        recognition.onspeechend = function() {
+            console.log("Speech ended.");
+            speakMessage("Speech ended.");
+            recognition.stop();
+        };
 
-    timelineContainer.appendChild(timelineItem);
-}
+        recognition.onresult = function(event) {
+            const command = event.results[0][0].transcript;
+            console.log("Voice command received: " + command);
+            speakMessage("Voice command received: " + command);
+            sendVoiceCommandToBackend(command);
+        };
+
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            speakMessage(`Error: ${event.error}`);
+            document.getElementById('assistant-output').textContent = `Error: ${event.error}`;
+        };
+
+        recognition.start();
+    }
+
+    function sendVoiceCommandToBackend(command) {
+        fetch('/process_voice', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ command: command })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const message = data.message;
+            console.log(message);
+            speakMessage(message); // Speak the response message
+            document.getElementById('assistant-output').textContent = message;
+            
+            if (message.includes("Reminder set")) {
+                addPillToTimeline(command); // Custom function to add reminder visually
+            }
+        })
+        .catch(error => {
+            console.error('Error sending voice command:', error);
+            speakMessage(`Error: ${error.message}`);
+            document.getElementById('assistant-output').textContent = `Error: ${error.message}`;
+        });
+    }
+
+    function speakMessage(message) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(message);
+            utterance.onstart = function() {
+                console.log("Speaking: " + message);
+            };
+            utterance.onerror = function(event) {
+                console.error("SpeechSynthesisUtterance error: ", event);
+            };
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert('Speech Synthesis API is not supported in this browser.');
+        }
+    }
+
+    function addPillToTimeline(command) {
+        const pillInfo = command.replace('set reminder for ', '').replace(' at', '').trim();
+        const reminderBox = document.getElementById('reminder-box');
+        const reminderList = document.getElementById('reminders-list');
+        reminderList.textContent = reminderList.textContent === 'No reminders set.' ? pillInfo : reminderList.textContent + ', ' + pillInfo;
+    }
+</script>
