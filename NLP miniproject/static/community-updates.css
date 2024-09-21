@@ -1,0 +1,137 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  color: #4a90e2;
+}
+
+.header p {
+  font-size: 1rem;
+  color: #777;
+}
+
+/* Input Area */
+.update-input {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 15px;
+  margin-bottom: 20px;
+}
+
+.input-field,
+.textarea-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.input-field:focus,
+.textarea-field:focus {
+  border-color: #4a90e2;
+}
+
+.textarea-field {
+  height: 80px;
+  resize: none;
+}
+
+/* Button */
+.btn {
+  padding: 10px 15px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #357ab8;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.add-btn {
+  justify-self: flex-end;
+}
+
+/* Updates List */
+.updates-list {
+  margin-top: 30px;
+}
+
+.update-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  column-gap: 15px;
+  align-items: center;
+  padding: 15px;
+  background-color: #f9fafb;
+  border-left: 5px solid #4a90e2;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.update-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.update-description {
+  color: #555;
+}
+
+.delete-btn,
+.publish-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.publish-btn {
+  background-color: #2ecc71;
+}
+
+.publish-btn:hover {
+  background-color: #27ae60;
+}
