@@ -4,9 +4,40 @@ import re
 import pyttsx3
 from threading import Lock, Thread
 from queue import Queue
+from twilio.rest import Client  # testing
+import vonage
+
+import os
+
+client = vonage.Client(key="4a6b3b47", secret="CCrFDJrdWOat7jhG")
+sms = vonage.Sms(client)
+
+
 
 app = Flask(__name__)
 
+'''
+# -------------- Testing sms ------------------------------
+client = vonage.Client(key="4a6b3b47", secret="CCrFDJrdWOat7jhG")
+sms = vonage.Sms(client)
+
+responseData = sms.send_message(
+    {
+        "from": "918668655668",
+        "to": "919860435553",
+        "text": "SOSOSOS Help im under the water",
+    }
+)
+
+if responseData["messages"][0]["status"] == "0":
+    print("Message sent successfully.")
+else:
+    print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+    
+
+
+# ---------------------------------------------------------------------------------
+'''
 # Initialize database
 def init_db():
     conn = sqlite3.connect('reminders.db')
@@ -25,6 +56,8 @@ init_db()
 
 # Text-to-speech engine initialization
 engine = pyttsx3.init()
+# voices = engine.getProperty('voices')
+# engine.setProperty('voice', voices[0].id) #male
 speech_queue = Queue()
 speech_lock = Lock()
 
@@ -39,6 +72,8 @@ def process_queue():
         text = speech_queue.get()
         engine.say(text)
         engine.runAndWait()
+        
+        
 
 @app.route('/')
 def home():
@@ -80,6 +115,27 @@ def delete_reminder(pill_name, reminder_time):
     cursor.execute("DELETE FROM pill_reminders WHERE pill_name = ? AND reminder_time = ?", (pill_name, reminder_time))
     conn.commit()
     conn.close()
+    
+import requests
+
+def get_weather(city):
+    print(f"Fetching weather for: {city}")
+    # Your API key should be a string
+    API_KEY = 'ad371e891249d722045f73b35fb610f9'
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+    
+    response = requests.get(url)
+    print(f"API response status: {response.status_code}")
+    
+    if response.status_code == 200:
+        data = response.json()
+        print(f"Received data: {data}")
+        weather_description = data['weather'][0]['description']
+        temp = data['main']['temp']
+        return f"The weather in {city} is currently {weather_description} with a temperature of {temp}°C."
+    else:
+        return "Sorry, I couldn't fetch the weather information."
+
 
 # Voice command processing route
 @app.route('/process_voice', methods=['POST'])
@@ -118,10 +174,6 @@ def process_voice():
                 response_message = "You have no reminders set."
                 speak(response_message)
 
-        elif 'weather' in command:
-            response_message = "The weather today is sunny..."
-            speak(response_message)
-
         elif 'delete reminder for' in command:
             pill_name = re.search(r'delete reminder for (.+?) at', command, re.IGNORECASE)
             reminder_time = re.search(r'at (\d{1,2}:\d{2} (?:AM|PM|a\.m\.|p\.m\.))', command, re.IGNORECASE)
@@ -140,6 +192,66 @@ def process_voice():
             delete_all_reminders()
             response_message = "All reminders have been deleted."
             speak(response_message)
+            
+        elif 'open community updates' in command:
+            response_message = "Opening community updates page."
+            speak(response_message)
+            return jsonify({"redirect": "/community_updates"})
+
+        elif 'open pill reminders' in command:
+            response_message = "Opening pill reminders page."
+            speak(response_message)
+            return jsonify({"redirect": "/pill_reminders.html"})
+        
+        elif "explorer" in command:
+            os.system("explorer")
+        elif "Notepad" in command:
+            os.system("notepad")
+        elif "chrome" in command:
+            os.system("start chrome")
+        elif "microsoft" in command:
+            os.system("start microsoft-edge:")
+        elif "calculator" in command:
+            os.system("calc")
+            
+        elif "goodbye" in command:
+            response_message = "Goodbye! Have a great day!"
+            speak(response_message)
+            
+        elif "hello" in command:
+            response_message = "Hello! How can i assist you?"
+            speak(response_message)
+            
+        elif "SOS" in command:
+            responseData = sms.send_message(
+                {
+                    "from": "918668655668",
+                    "to": "919860435553",
+                    "text": "SOSOSOS Help im under the water",   # DONT FORGET TO CHANGE    
+                }
+            )
+            
+            if responseData["messages"][0]["status"] == "0":
+                print("Message sent successfully.")
+                response_message = "Message sent successfully."
+                speak(response_message)
+            else:
+                print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+                response_message = "Message failed"
+                speak(response_message)
+                
+        elif "weather" in command:
+        # Extract the city name from the command
+            if "in" in command:
+                city = command.split("in")[-1].strip()
+                weather_info = get_weather(city)
+                print(weather_info)
+                response_message = weather_info
+                speak(response_message)
+                
+            else:
+                print("Please specify a city for the weather information.")
+    
 
         else:
             response_message = "Sorry, I didn't understand that."
@@ -171,4 +283,4 @@ def add_pill_to_timeline():
         return jsonify({"error": "Invalid request format"}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port= 5001)
