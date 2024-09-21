@@ -74,6 +74,9 @@ def process_queue():
         engine.runAndWait()
         
         
+@app.route('/community_updates')
+def community_updates():
+    return render_template('community_updates.html')
 
 @app.route('/')
 def home():
@@ -197,12 +200,12 @@ def process_voice():
             response_message = "Opening community updates page."
             speak(response_message)
             return jsonify({"redirect": "/community_updates"})
-
+    
         elif 'open pill reminders' in command:
             response_message = "Opening pill reminders page."
             speak(response_message)
-            return jsonify({"redirect": "/pill_reminders.html"})
-        
+            return jsonify({"redirect": "/pill_reminders"})
+            
         elif "explorer" in command:
             os.system("explorer")
         elif "Notepad" in command:
@@ -225,8 +228,9 @@ def process_voice():
         elif "SOS" in command:
             responseData = sms.send_message(
                 {
-                    "from": "918668655668",
-                    "to": "919860435553",
+                    "from": "Elderly Care App SOS Team",
+
+                    "to": "919004128510",
                     "text": "SOSOSOS Help im under the water",   # DONT FORGET TO CHANGE    
                 }
             )
@@ -239,6 +243,8 @@ def process_voice():
                 print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
                 response_message = "Message failed"
                 speak(response_message)
+                
+                
                 
         elif "weather" in command:
         # Extract the city name from the command
