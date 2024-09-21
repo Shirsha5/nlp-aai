@@ -4,40 +4,18 @@ import re
 import pyttsx3
 from threading import Lock, Thread
 from queue import Queue
-from twilio.rest import Client  # testing
 import vonage
-
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
+import time
 import os
+import pytz
 
 client = vonage.Client(key="4a6b3b47", secret="CCrFDJrdWOat7jhG")
 sms = vonage.Sms(client)
-
-
 
 app = Flask(__name__)
 
-'''
-# -------------- Testing sms ------------------------------
-client = vonage.Client(key="4a6b3b47", secret="CCrFDJrdWOat7jhG")
-sms = vonage.Sms(client)
-
-responseData = sms.send_message(
-    {
-        "from": "918668655668",
-        "to": "919860435553",
-        "text": "SOSOSOS Help im under the water",
-    }
-)
-
-if responseData["messages"][0]["status"] == "0":
-    print("Message sent successfully.")
-else:
-    print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-    
-
-
-# ---------------------------------------------------------------------------------
-'''
 # Initialize database
 def init_db():
     conn = sqlite3.connect('reminders.db')
@@ -53,6 +31,31 @@ def init_db():
     conn.close()
 
 init_db()
+
+# Initialize APScheduler
+scheduler = BackgroundScheduler()
+
+def check_reminders():
+    conn = sqlite3.connect('reminders.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT pill_name, reminder_time FROM pill_reminders")
+    reminders = cursor.fetchall()
+    
+    # Get current time in IST
+    ist = pytz.timezone('Asia/Kolkata')
+    current_time = datetime.now(ist).strftime("%I:%M %p")
+        
+    for pill_name, reminder_time in reminders:
+        print(reminder_time)
+        if reminder_time == current_time:
+            print(f"Reminder: Time to take {pill_name}!")  
+            speak(f"Reminder: Time to take {pill_name}!")
+
+    conn.close()
+
+# Add a job to the scheduler
+scheduler.add_job(check_reminders, 'interval', minutes=1)  # Check every minute
+scheduler.start()
 
 # Text-to-speech engine initialization
 engine = pyttsx3.init()
@@ -74,25 +77,41 @@ def process_queue():
         engine.runAndWait()
         
         
-@app.route('/community_updates')
+@app.route('/community-updates')
 def community_updates():
-    return render_template('community_updates.html')
+    return render_template('community-updates.html')
 
 @app.route('/')
 def home():
     return render_template('elderly-care-app.html')
 
-@app.route('/pill_reminder')
+@app.route('/pill-reminder')
 def pill_reminder():
-    return render_template('pill_reminders.html')
+    return render_template('pill-reminders.html')
 
 # Helper function to add pill reminder to the database
 def add_pill_reminder(pill_name, reminder_time):
+    # Remove periods and ensure AM/PM is in uppercase
+    reminder_time = reminder_time.replace(".", "").strip().upper()  # e.g., "11:04 P.M." -> "11:04 PM"
+    
+    # Ensure it's in a consistent format
     conn = sqlite3.connect('reminders.db')
     cursor = conn.cursor()
     cursor.execute("INSERT INTO pill_reminders (pill_name, reminder_time) VALUES (?, ?)", (pill_name, reminder_time))
     conn.commit()
     conn.close()
+    
+    '''
+#-------------------------- TEST
+def manual_add_reminder(pill_name, reminder_time):
+    # Call the add_pill_reminder function to insert directly
+    add_pill_reminder(pill_name, reminder_time)
+
+# Example usage
+manual_add_reminder("Aspirin", "11:04 PM")
+manual_add_reminder("Vitamin D", "08:30 AM")
+'''
+
 
 # Helper function to retrieve all reminders
 def get_all_reminders():
@@ -152,18 +171,18 @@ def process_voice():
     try:
         response_message = ""
 
-        if 'set reminder for' in command:
+        if 'set reminder' in command or 'set a reminder' in command or 'set alarm' in command:
             pill_name = re.search(r'set reminder for (.+?) at', command, re.IGNORECASE)
             reminder_time = re.search(r'at (\d{1,2}:\d{2} (?:AM|PM|a\.m\.|p\.m\.))', command, re.IGNORECASE)
             
             if pill_name and reminder_time:
                 pill_name = pill_name.group(1).strip()
-                reminder_time = reminder_time.group(1).strip()
+                reminder_time = reminder_time.group(1).strip().upper()  # Convert to uppercase
 
+                # Add the pill reminder
                 add_pill_reminder(pill_name, reminder_time)
                 response_message = f"Reminder set to take {pill_name} at {reminder_time}"
                 speak(response_message)
-
             else:
                 response_message = "Could not extract pill name or time from your command."
                 speak(response_message)
@@ -199,12 +218,13 @@ def process_voice():
         elif 'open community updates' in command:
             response_message = "Opening community updates page."
             speak(response_message)
-            return jsonify({"redirect": "/community_updates"})
+            return jsonify({"redirect": "/community-updates"})
     
         elif 'open pill reminders' in command:
             response_message = "Opening pill reminders page."
             speak(response_message)
-            return jsonify({"redirect": "/pill_reminders"})
+            return jsonify({"redirect": "/pill-reminders"})
+        
             
         elif "explorer" in command:
             os.system("explorer")

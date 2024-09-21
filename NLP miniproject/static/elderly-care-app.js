@@ -31,7 +31,6 @@ function captureVoiceCommand() {
         sendVoiceCommandToBackend(command);
     };
 
-
     recognition.onerror = function(event) {
         console.error('Speech recognition error:', event.error);
         if (event.error === 'no-speech') {
@@ -42,7 +41,6 @@ function captureVoiceCommand() {
             console.log("Permission to use microphone was denied.");
         }
     };
-    
 
     // Start speech recognition
     recognition.start();
@@ -67,13 +65,16 @@ function sendVoiceCommandToBackend(command) {
         console.log(data.message);
         document.getElementById('assistant-output').textContent = data.message;
         
+        // Redirect if specified
+        if (data.redirect) {
+            window.location.href = data.redirect; // Redirect to the specified page
+        }
+
         if (data.message.includes("Reminder set")) {
             addPillToTimeline(command); // Custom function to add reminder visually
         }
     })
     .catch(error => console.error('Error sending voice command:', error));
-
-    
 }
 
 let voices = [];
@@ -112,7 +113,6 @@ function speak(message) {
     }
 }
 
-
 function addPillToTimeline(command) {
     const pillInfo = command.replace('set reminder to take ', '').replace(' at', '').trim(); // Extract the pill info from command
 
@@ -121,6 +121,3 @@ function addPillToTimeline(command) {
 
     reminderList.textContent = reminderList.textContent === 'No reminders set.' ? pillInfo : reminderList.textContent + ', ' + pillInfo;
 }
-
-
-    
