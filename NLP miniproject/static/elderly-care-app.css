@@ -1,3 +1,4 @@
+/* General Styles */
 body {
   font-family: 'Arial', sans-serif;
   margin: 0;
@@ -6,136 +7,189 @@ body {
   color: #333;
 }
 
-header {
-  background-color: #5C7AEA;
-  color: white;
-  text-align: center;
-  padding: 15px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
+a {
+  text-decoration: none;
 }
 
-header h1 {
-  margin: 0;
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Header */
+header {
+  background-color: #5C7AEA;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-links {
   list-style: none;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
   display: flex;
-  gap: 30px;
-}
-
-.nav-links li {
-  display: inline;
+  gap: 20px;
 }
 
 .nav-links a {
   color: white;
-  text-decoration: none;
   font-size: 18px;
-  transition: color 0.3s ease;
 }
 
-.nav-links a:hover {
-  color: #d1d1d1;
-}
+/* Hero Section */
 
-.login-icon {
-  width: 24px;
-  height: 24px;
-  vertical-align: middle;
-}
-
-#voice-command-container {
+#hero {
   text-align: center;
-  margin: 30px 0;
-}
-
-#main-content {
-  display: flex;
-  justify-content: space-around;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.content-box {
-  background-color: white;
-  width: 30%;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-  min-height: 300px; /* Increased height */
-}
-
-.content-box:hover {
-  transform: translateY(-5px);
-}
-
-h2 {
-  color: #5C7AEA;
-  margin-bottom: 15px;
-  font-size: 1.5em;
-  text-align: center;
-}
-
-#reminder-box, #assistant-output, #community-updates {
-  background-color: #f0f4f7;
-  padding: 15px;
-  border-radius: 10px;
-  min-height: 120px;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Button Enhancements */
-.btn {
+  padding: 50px 20px;
   background-color: #5C7AEA;
+  background-image: url('./images/healthcareapp-homepg.webp'); 
+  background-size: cover; 
+  background-position: center; /* Centers the image */
   color: white;
-  padding: 16px 32px;
+}
+
+
+.cta-buttons {
+  margin-top: 20px;
+}
+
+.btn {
+  background-color: white;
+  color: #5C7AEA;
+  padding: 15px 30px;
+  border-radius: 5px;
   border: none;
-  border-radius: 50px;
   cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-right: 15px;
+}
+
+.btn-secondary {
+  background-color: #4b64d0;
+  color: white;
 }
 
 .btn:hover {
-  background-color: #4b64d0;
-  transform: scale(1.05);
+  opacity: 0.8;
 }
 
-#speak-btn {
-  margin-top: 20px;
-  animation: pulse 2s infinite;
-}
-
-/* Button Animation */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-
-footer {
+/* Services Section */
+#services {
+  background-color: #f7f9fc;
+  padding: 50px 20px;
   text-align: center;
-  padding: 10px 0;
+}
+
+.services-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.service-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 30%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service-box img {
+  width: 100%;
+  height: 200px; /* Fixed height for consistency */
+  object-fit: cover;
+}
+
+h3 {
+  color: #5C7AEA;
+}
+
+/* Global Offer Section */
+#global-offer {
+  background-color: #f0f4f7;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.global-offer-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.offer-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 30%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.offer-box img {
+  width: 100%;
+  height: 200px; /* Fixed height for consistency */
+  object-fit: cover;
+}
+
+/* Commitments Section */
+#commitments {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.commitments-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.commitment-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 30%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.commitment-box img {
+  width: 100%;
+  height: 150px; /* Fixed height for consistency */
+  object-fit: cover;
+}
+
+/* Contact Us Section */
+#contact-us {
+  background-color: #f7f9fc;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.contact-details {
+  font-size: 18px;
+  color: #333;
+}
+
+.contact-details a {
+  color: #5C7AEA;
+  text-decoration: none;
+}
+
+.contact-details a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+footer {
   background-color: #5C7AEA;
   color: white;
-  position: relative;
-  bottom: 0;
-  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.social-icons img {
+  width: 24px;
+  margin: 0 10px;
 }
