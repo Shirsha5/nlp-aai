@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import sqlite3
 import re
 import pyttsx3
-from threading import Lock, Thread
+from threading import Lock, Thread, Event
 from queue import Queue
 import vonage
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -11,50 +11,7 @@ import time
 import os
 import pytz
 
-client = vonage.Client(key="4a6b3b47", secret="CCrFDJrdWOat7jhG")
-sms = vonage.Sms(client)
-
 app = Flask(__name__)
-
-# Initialize database
-def init_db():
-    conn = sqlite3.connect('reminders.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS pill_reminders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            pill_name TEXT NOT NULL,
-            reminder_time TEXT NOT NULL
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-init_db()
-
-# Initialize APScheduler
-scheduler = BackgroundScheduler()
-
-def check_reminders():
-    conn = sqlite3.connect('reminders.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT pill_name, reminder_time FROM pill_reminders")
-    reminders = cursor.fetchall()
-    
-    # Get current time in IST
-    ist = pytz.timezone('Asia/Kolkata')
-    current_time = datetime.now(ist).strftime("%I:%M %p")
-        
-    for pill_name, reminder_time in reminders:
-        if reminder_time == current_time:
-            print(f"Reminder: Time to take {pill_name}!")  
-            speak(f"Reminder: Time to take {pill_name}!")
-
-    conn.close()
-
-# Add a job to the scheduler
-scheduler.add_job(check_reminders, 'interval', minutes=1)  # Check every minute
-scheduler.start()
 
 # Text-to-speech engine initialization
 engine = pyttsx3.init()
@@ -86,6 +43,66 @@ def home():
 @app.route('/pill-reminder')
 def pill_reminder():
     return render_template('pill-reminders.html')
+
+client = vonage.Client(key="4a6b3b47", secret="CCrFDJrdWOat7jhG")
+sms = vonage.Sms(client)
+
+# Initialize database
+def init_db():
+    conn = sqlite3.connect('reminders.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS pill_reminders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pill_name TEXT NOT NULL,
+            reminder_time TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+init_db()
+
+# Initialize APScheduler
+scheduler = BackgroundScheduler()
+
+# Pill reminder control events
+pill_taken_event = Event()  # Will be set when the user says "pill taken"
+
+# Function to repeat reminder every 5 minutes if "pill taken" is not said
+def check_reminders():
+    conn = sqlite3.connect('reminders.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT pill_name, reminder_time FROM pill_reminders")
+    reminders = cursor.fetchall()
+
+    # Get current time in IST
+    ist = pytz.timezone('Asia/Kolkata')
+    current_time = datetime.now(ist).strftime("%I:%M %p")
+
+    for pill_name, reminder_time in reminders:
+        
+        if reminder_time == current_time:
+            print(f"Reminder: Time to take {pill_name}!")
+            speak(f"Reminder: Time to take {pill_name}!")
+
+            # Set event to wait for the keyword
+            pill_taken_event.clear()
+
+            # Start a thread to keep reminding every 5 minutes until "pill taken" is heard
+            Thread(target=wait_for_pill_taken, args=(pill_name,)).start()
+
+    conn.close()
+
+def wait_for_pill_taken(pill_name):
+    # Keep reminding every 5 minutes until "pill taken" is detected
+    while not pill_taken_event.wait(timeout=300):  # Wait for 5 minutes
+        print(f"Reminder: Please take {pill_name}!")
+        speak(f"Reminder: Please take {pill_name}!")
+        
+# Add a job to the scheduler
+scheduler.add_job(check_reminders, 'interval', minutes=1)  # Check every minute
+scheduler.start()
 
 # Helper function to add pill reminder to the database
 def add_pill_reminder(pill_name, reminder_time):
@@ -140,7 +157,6 @@ import requests
 
 def get_weather(city):
     print(f"Fetching weather for: {city}")
-    # Your API key should be a string
     API_KEY = 'ad371e891249d722045f73b35fb610f9'
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
     
@@ -275,7 +291,12 @@ def process_voice():
                 
             else:
                 print("Please specify a city for the weather information.")
-    
+                
+        # Detect if user says "pill taken"
+        elif 'pill taken' in command.lower():
+            pill_taken_event.set()  # Stop reminders
+            response_message = "Great! You've taken your pill."
+            speak(response_message)
 
         else:
             response_message = "Sorry, I didn't understand that."
@@ -301,7 +322,7 @@ def add_pill_to_timeline():
         command = data.get('command')
         pill_info = command.replace('set reminder for ', '').replace(' at', '').strip()
         response_message = f"Added '{pill_info}' to timeline."
-        # Assuming you handle this in JavaScript or the front-end code
+        # handled this in js
         return jsonify({"message": response_message})
     else:
         return jsonify({"error": "Invalid request format"}), 400
