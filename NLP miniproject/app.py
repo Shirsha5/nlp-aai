@@ -46,7 +46,6 @@ def check_reminders():
     current_time = datetime.now(ist).strftime("%I:%M %p")
         
     for pill_name, reminder_time in reminders:
-        print(reminder_time)
         if reminder_time == current_time:
             print(f"Reminder: Time to take {pill_name}!")  
             speak(f"Reminder: Time to take {pill_name}!")
