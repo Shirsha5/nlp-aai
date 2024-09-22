@@ -1,97 +1,101 @@
     <!-- Landing page (after login/signup) -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elderly Care App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='elderly-care-app.css') }}">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#"><img src="login-icon.png" alt="Login" class="login-icon"></a></li>
-            </ul>
-        </nav>
-        <h1>Elderly Care App</h1>
-    </header>
-
-    <main>
-        <div id="voice-command-container">
-            <button id="speak-btn" class="btn">Activate Voice Command</button>
-        </div>
-
-        <div id="main-content">
-            <section id="pill-reminders" class="content-box">
-                <h2>Pill Reminders</h2>
-                <div id="reminder-box">
-                    <div id="reminders-list">No reminders set.</div>
-                </div>
-            </section>
-
-            <section id="virtual-assistant" class="content-box">
-                <h2>Virtual Assistant</h2>
-                <div id="assistant-output">How can I assist you today?</div>
-            </section>
-
-            <section id="community-network" class="content-box">
-                <h2>Community Updates</h2>
-                <div id="community-updates">No updates available</div>
-            </section>
-        </div>
-
-        <div class='tableauPlaceholder' id='viz1724523921768' style='position: relative'>
-            <noscript>
-                <a href='#'>
-                    <img alt='Dashboard 1 ' src='https://public.tableau.com/static/images/nl/nlp_aai_sample/Dashboard1/1_rss.png' style='border: none' />
-                </a>
-            </noscript>
-            <object class='tableauViz' style='display:none;'>
-                <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-                <param name='embed_code_version' value='3' />
-                <param name='site_root' value='' />
-                <param name='name' value='nlp_aai_sample/Dashboard1' />
-                <param name='tabs' value='no' />
-                <param name='toolbar' value='yes' />
-                <param name='static_image' value='https://public.tableau.com/static/images/nl/nlp_aai_sample/Dashboard1/1.png' />
-                <param name='animate_transition' value='yes' />
-                <param name='display_static_image' value='yes' />
-                <param name='display_spinner' value='yes' />
-                <param name='display_overlay' value='yes' />
-                <param name='display_count' value='yes' />
-                <param name='language' value='en-US' />
-                <param name='filter' value='publish=yes' />
-            </object>
-            <script type='text/javascript'>
-                var divElement = document.getElementById('viz1724523921768');
-                var vizElement = divElement.getElementsByTagName('object')[0];
-                if (divElement.offsetWidth > 800) {
-                    vizElement.style.width = '1000px';
-                    vizElement.style.height = '827px';
-                } else if (divElement.offsetWidth > 500) {
-                    vizElement.style.width = '1000px';
-                    vizElement.style.height = '827px';
-                } else {
-                    vizElement.style.width = '100%';
-                    vizElement.style.height = '1277px';
-                }
-                var scriptElement = document.createElement('script');
-                scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-                vizElement.parentNode.insertBefore(scriptElement, vizElement);
-            </script>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Elderly Care App</p>
-    </footer>
-
-    <script src="{{ url_for('static', filename='elderly-care-app.js') }}"></script>
-    <script src="{{ url_for('static', filename='pill-reminders.js') }}"></script>
-
-   
-</body>
-</html>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Elderly Care App</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='elderly-care-app.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="homepage.html">Home</a></li>
+                    <li><a href="pill-reminders.html">Pill Reminders</a></li>
+                    <li><a href="login.html"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16"></svg>
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                      </svg> <span style="color: white; font-size: 18px;">Log In</span></a></li>
+                </ul>
+            </nav>
+            <h1>Elderly Care App</h1>
+        </header>
+    
+        <main>
+            <div id="voice-command-container">
+                <button id="speak-btn" class="btn">Activate Voice Command</button>
+            </div>
+    
+            <div id="main-content">
+                <section id="pill-reminders" class="content-box">
+                    <h2>Pill Reminders</h2>
+                    <div id="reminder-box">
+                        <div id="reminders-list">No reminders set.</div>
+                    </div>
+                </section>
+    
+                <section id="virtual-assistant" class="content-box">
+                    <h2>Virtual Assistant</h2>
+                    <div id="assistant-output">How can I assist you today?</div>
+                </section>
+    
+                <section id="community-network" class="content-box">
+                    <h2>Community Updates</h2>
+                    <div id="community-updates">No updates available</div>
+                </section>
+            </div>
+    
+            <div class='tableauPlaceholder' id='viz1724523921768' style='position: relative'>
+                <noscript>
+                    <a href='#'>
+                        <img alt='Dashboard 1 ' src='https://public.tableau.com/static/images/nl/nlp_aai_sample/Dashboard1/1_rss.png' style='border: none' />
+                    </a>
+                </noscript>
+                <object class='tableauViz' style='display:none;'>
+                    <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                    <param name='embed_code_version' value='3' />
+                    <param name='site_root' value='' />
+                    <param name='name' value='nlp_aai_sample/Dashboard1' />
+                    <param name='tabs' value='no' />
+                    <param name='toolbar' value='yes' />
+                    <param name='static_image' value='https://public.tableau.com/static/images/nl/nlp_aai_sample/Dashboard1/1.png' />
+                    <param name='animate_transition' value='yes' />
+                    <param name='display_static_image' value='yes' />
+                    <param name='display_spinner' value='yes' />
+                    <param name='display_overlay' value='yes' />
+                    <param name='display_count' value='yes' />
+                    <param name='language' value='en-US' />
+                    <param name='filter' value='publish=yes' />
+                </object>
+                <script type='text/javascript'>
+                    var divElement = document.getElementById('viz1724523921768');
+                    var vizElement = divElement.getElementsByTagName('object')[0];
+                    if (divElement.offsetWidth > 800) {
+                        vizElement.style.width = '1000px';
+                        vizElement.style.height = '827px';
+                    } else if (divElement.offsetWidth > 500) {
+                        vizElement.style.width = '1000px';
+                        vizElement.style.height = '827px';
+                    } else {
+                        vizElement.style.width = '100%';
+                        vizElement.style.height = '1277px';
+                    }
+                    var scriptElement = document.createElement('script');
+                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+                    vizElement.parentNode.insertBefore(scriptElement, vizElement);
+                </script>
+            </div>
+        </main>
+    
+        <footer>
+            <p>&copy; 2024 Elderly Care App</p>
+        </footer>
+    
+        <script src="{{ url_for('static', filename='elderly-care-app.js') }}"></script>
+        <script src="{{ url_for('static', filename='pill-reminders.js') }}"></script>
+    
+       
+    </body>
+    </html>
