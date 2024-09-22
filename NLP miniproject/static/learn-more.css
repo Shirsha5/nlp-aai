@@ -1,0 +1,105 @@
+/* Learn More Page Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fc;
+    color: #333;
+}
+
+header {
+    background-color: #5C7AEA;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #d1d1d1;
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h2 {
+    color: #5C7AEA;
+    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.feature-box {
+    background-color: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+}
+
+.testimonial-box {
+    background-color: #f0f4f7;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    text-align: center;
+}
+
+.testimonial-box p {
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+.testimonial-box span {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+footer {
+    background-color: #5C7AEA;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
