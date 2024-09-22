@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from chatbot import generate_response
 import sqlite3
 import re
 import pyttsx3
@@ -291,7 +292,12 @@ def process_voice():
                 
             else:
                 print("Please specify a city for the weather information.")
-                
+
+        elif 'chat' in command or 'talk to chatbot' in command:
+            # Call the chatbot function to get the response
+            response_message = generate_response(command)
+            speak(response_message)
+                    
         # Detect if user says "pill taken"
         elif 'pill taken' in command.lower():
             pill_taken_event.set()  # Stop reminders
