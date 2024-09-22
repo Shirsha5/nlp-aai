@@ -75,7 +75,6 @@ def process_queue():
         engine.say(text)
         engine.runAndWait()
         
-        
 @app.route('/community-updates')
 def community_updates():
     return render_template('community-updates.html')

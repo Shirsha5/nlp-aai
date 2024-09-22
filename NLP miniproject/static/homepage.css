@@ -1,0 +1,195 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f9fc;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Header */
+header {
+  background-color: #5C7AEA;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;
+  font-size: 18px;
+}
+
+/* Hero Section */
+
+#hero {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #5C7AEA;
+  background-image: url('./images/healthcareapp-homepg.webp'); 
+  background-size: cover; 
+  background-position: center; /* Centers the image */
+  color: white;
+}
+
+
+.cta-buttons {
+  margin-top: 20px;
+}
+
+.btn {
+  background-color: white;
+  color: #5C7AEA;
+  padding: 15px 30px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.btn-secondary {
+  background-color: #4b64d0;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+/* Services Section */
+#services {
+  background-color: #f7f9fc;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.services-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.service-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 30%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service-box img {
+  width: 100%;
+  height: 200px; /* Fixed height for consistency */
+  object-fit: cover;
+}
+
+h3 {
+  color: #5C7AEA;
+}
+
+/* Global Offer Section */
+#global-offer {
+  background-color: #f0f4f7;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.global-offer-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.offer-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 30%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.offer-box img {
+  width: 100%;
+  height: 200px; /* Fixed height for consistency */
+  object-fit: cover;
+}
+
+/* Commitments Section */
+#commitments {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.commitments-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.commitment-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 30%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.commitment-box img {
+  width: 100%;
+  height: 150px; /* Fixed height for consistency */
+  object-fit: cover;
+}
+
+/* Contact Us Section */
+#contact-us {
+  background-color: #f7f9fc;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.contact-details {
+  font-size: 18px;
+  color: #333;
+}
+
+.contact-details a {
+  color: #5C7AEA;
+  text-decoration: none;
+}
+
+.contact-details a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+footer {
+  background-color: #5C7AEA;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.social-icons img {
+  width: 24px;
+  margin: 0 10px;
+}
