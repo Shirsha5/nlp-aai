@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Community Updates</title>
-  <link rel="stylesheet" href="community-updates.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='community-updates.css') }}">
 </head>
 <body>
   <div class="container">
@@ -21,9 +21,23 @@
 
     <div class="updates-list js-updates-list">
       <!-- Dynamically generated updates will appear here -->
+      <table>
+        <thead>
+          <tr>
+            <th>Update Title</th>
+            <th>Update Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="updates-table">
+          <!-- Updates will be inserted dynamically here -->
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <script src="community-updates.js"></script>
+  
+  <script src="{{ url_for('static', filename='community-updates.js') }}"></script>
+
 </body>
 </html>
