@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, jsonify
+#test app.py
+
+from flask import Flask, render_template, request, jsonify, send_from_directory, session
 from chatbot import generate_response
 import sqlite3
 import re
@@ -12,12 +14,52 @@ import time
 import os
 import pytz
 
-app = Flask(__name__)
+app = Flask(__name__) 
+
+
+@app.route('/')
+def home():
+    return render_template('homepage.html')
+
+@app.route('/static/<filename>')
+def images(filename):
+    return send_from_directory('static', filename)
+
+
+'''
+# Text-to-speech engine initialization
+engine = pyttsx3.init()
+speech_queue = Queue()
+speech_lock = Lock()
+
+# Helper functions for text-to-speech (TTS)
+def process_queue():
+    while not speech_queue.empty():
+        text = speech_queue.get()
+        engine.say(text)
+        try:
+            engine.runAndWait()
+        except Exception as e:
+            print(f"Error in TTS engine: {e}")
+            engine.endLoop()  # End any stuck loops
+            engine.startLoop(False)  # Restart the loop
+
+def speak(text):
+    with speech_lock:
+        speech_queue.put(text)
+        if not engine._inLoop:
+            # Safely start the process_queue in a thread
+            Thread(target=process_queue).start()
+
+def reinitialize_engine():
+    global engine
+    engine.endLoop()  # End any existing loop
+    engine = pyttsx3.init()  # Reinitialize the engine
+'''
+
 
 # Text-to-speech engine initialization
 engine = pyttsx3.init()
-# voices = engine.getProperty('voices')
-# engine.setProperty('voice', voices[0].id) #male
 speech_queue = Queue()
 speech_lock = Lock()
 
@@ -32,38 +74,98 @@ def process_queue():
         text = speech_queue.get()
         engine.say(text)
         engine.runAndWait()
-        
+'''
+
 @app.route('/community-updates')
 def community_updates():
     return render_template('community-updates.html')
-
 @app.route('/')
 def home():
-    return render_template('elderly-care-app.html')
+    return render_template('elderly-care-app.html')'''
 
 @app.route('/pill-reminder')
 def pill_reminder():
     return render_template('pill-reminders.html')
 
+@app.route('/signin')
+def signin():
+    return render_template('signin.html')
+
+@app.route('/learn-more')
+def learn_more():
+    return render_template('learn-more.html')
+
 client = vonage.Client(key="4a6b3b47", secret="CCrFDJrdWOat7jhG")
 sms = vonage.Sms(client)
 
-# Initialize database
+
+'''@app.route('/')
+def home():
+    return render_template('elderly-care-app.html')
+'''
+# Database initialization
 def init_db():
-    conn = sqlite3.connect('reminders.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS pill_reminders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            pill_name TEXT NOT NULL,
-            reminder_time TEXT NOT NULL
-        )
-    ''')
-    conn.commit()
-    conn.close()
+    with sqlite3.connect('pillpal.db') as conn:  
+        cursor = conn.cursor()
+        # User table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                email TEXT NOT NULL
+            )
+        ''')
+        # Pills table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS pills (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                pill_name TEXT NOT NULL,
+                dosage TEXT,
+                frequency INTEGER NOT NULL,
+                time_to_take TEXT NOT NULL,
+                next_restocking_date TEXT
+            )
+        ''')
+        # Pill reminders table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS pill_reminders (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                pill_id INTEGER NOT NULL,
+                pill_name TEXT NOT NULL,
+                reminder_date TEXT NOT NULL,
+                reminder_time TEXT NOT NULL,
+                FOREIGN KEY (pill_name) REFERENCES pills (pill_name),
+                FOREIGN KEY (user_id) REFERENCES users (id),
+                FOREIGN KEY (pill_id) REFERENCES pills (id)
+            )
+        ''')
+        # Community updates table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS community_updates (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                update_text TEXT NOT NULL,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        conn.commit()
 
 init_db()
 
+# User authentication helpers
+def signup_user(username, password, email):
+    with sqlite3.connect('pillpal.db') as conn:  
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", (username, password, email))
+        conn.commit()
+
+def login_user(username, password):
+    with sqlite3.connect('pillpal.db') as conn:  
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM users WHERE username = ? AND password = ?", (username, password))
+        user = cursor.fetchone()
+        return user
+    
 # Initialize APScheduler
 scheduler = BackgroundScheduler()
 
@@ -72,7 +174,7 @@ pill_taken_event = Event()  # Will be set when the user says "pill taken"
 
 # Function to repeat reminder every 5 minutes if "pill taken" is not said
 def check_reminders():
-    conn = sqlite3.connect('reminders.db')
+    conn = sqlite3.connect('pillpal.db')
     cursor = conn.cursor()
     cursor.execute("SELECT pill_name, reminder_time FROM pill_reminders")
     reminders = cursor.fetchall()
@@ -105,13 +207,72 @@ def wait_for_pill_taken(pill_name):
 scheduler.add_job(check_reminders, 'interval', minutes=1)  # Check every minute
 scheduler.start()
 
+
+# NLP techniques for date parsing
+def parse_nlp_date(date_str):
+    parsed_date = dateparser.parse(date_str)
+    if parsed_date:
+        return parsed_date.strftime('%Y-%m-%d')
+    return None
+
+# Community updates
+def add_community_update(update_text):
+    with sqlite3.connect('pillpal.db') as conn: 
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO community_updates (update_text) VALUES (?)", (update_text,))
+        conn.commit()
+
+def get_community_updates():
+    with sqlite3.connect('pillpal.db') as conn:  
+        cursor = conn.cursor()
+        cursor.execute("SELECT update_text FROM community_updates ORDER BY created_at DESC")
+        updates = cursor.fetchall()
+        return updates
+
+# Routes for login and signup
+from flask import session, redirect, render_template
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        signup_user(username, password, email)
+        session['success'] = "Signup successful!"  # Set a session variable
+        home()
+        return redirect('/elder-care-app')  # Redirect to the login page
+    return render_template('signup.html', error=None, success=None)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = login_user(username, password)
+        if user:
+            session['success'] = "Login successful!"  # Set a session variable
+            home()
+            return redirect('/elder-care-app')  # Redirect to the app page
+        else:
+            return render_template('login.html', error="Invalid credentials")
+    return render_template('login.html', error=None)
+
+# Community updates page
+@app.route('/community-updates')
+def community_updates():
+    updates = get_community_updates()
+    return render_template('community_updates.html', updates=updates)
+
+
 # Helper function to add pill reminder to the database
 def add_pill_reminder(pill_name, reminder_time):
     # Remove periods and ensure AM/PM is in uppercase
     reminder_time = reminder_time.replace(".", "").strip().upper()  # e.g., "11:04 P.M." -> "11:04 PM"
     
     # Ensure it's in a consistent format
-    conn = sqlite3.connect('reminders.db')
+    conn = sqlite3.connect('pillpal.db')
     cursor = conn.cursor()
     cursor.execute("INSERT INTO pill_reminders (pill_name, reminder_time) VALUES (?, ?)", (pill_name, reminder_time))
     conn.commit()
@@ -131,7 +292,7 @@ manual_add_reminder("Vitamin D", "08:30 AM")
 
 # Helper function to retrieve all reminders
 def get_all_reminders():
-    conn = sqlite3.connect('reminders.db')
+    conn = sqlite3.connect('pillpal.db')
     cursor = conn.cursor()
     cursor.execute("SELECT id, pill_name, reminder_time FROM pill_reminders")
     reminders = cursor.fetchall()
@@ -140,7 +301,7 @@ def get_all_reminders():
 
 # Helper function to delete all reminders
 def delete_all_reminders():
-    conn = sqlite3.connect('reminders.db')
+    conn = sqlite3.connect('pillpal.db')
     cursor = conn.cursor()
     cursor.execute("DELETE FROM pill_reminders")
     conn.commit()
@@ -148,7 +309,7 @@ def delete_all_reminders():
 
 # Helper function to delete specific reminder
 def delete_reminder(pill_name, reminder_time):
-    conn = sqlite3.connect('reminders.db')
+    conn = sqlite3.connect('pillpal.db')
     cursor = conn.cursor()
     cursor.execute("DELETE FROM pill_reminders WHERE pill_name = ? AND reminder_time = ?", (pill_name, reminder_time))
     conn.commit()
@@ -207,6 +368,8 @@ def process_voice():
             if reminders:
                 reminder_list = '\n'.join([f"{pill} at {time}" for id, pill, time in reminders])
                 response_message = f"Your reminders are:\n{reminder_list}"
+                speak(response_message)
+
             else:
                 response_message = "You have no reminders set."
                 speak(response_message)
@@ -335,3 +498,4 @@ def add_pill_to_timeline():
 
 if __name__ == '__main__':
     app.run(debug=True, port= 5001)
+
