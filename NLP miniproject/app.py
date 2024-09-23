@@ -136,7 +136,6 @@ def init_db():
                 reminder_date TEXT NOT NULL,
                 reminder_time TEXT NOT NULL,
                 FOREIGN KEY (pill_name) REFERENCES pills (pill_name),
-                FOREIGN KEY (user_id) REFERENCES users (id),
                 FOREIGN KEY (pill_id) REFERENCES pills (id)
             )
         ''')
