@@ -20,8 +20,8 @@
                 </div>
                 <nav>
                     <ul class="nav-links">
-                        <li><a href="community-updates.html">Community</a></li>
-                        <li><a href="login.html"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <li><a href="{{ url_for('community_updates') }}">Community</a></li>
+                        <li><a href="{{ url_for('login') }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16">
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                             <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                           </svg> <span style="color: white; font-size: 18px;">Log In</span></a></li>
@@ -36,8 +36,8 @@
                 <h1>Welcome to Elderly Care App</h1>
                 <p>Simplify elderly care with voice assistance, reminders, and community support.</p>
                 <div class="cta-buttons">
-                    <a href="signin.html" class="btn">Get Started</a>
-                    <a href="learn-more.html" class="btn btn-secondary">Learn More</a>
+                    <a href="{{ url_for('signin') }}" class="btn">Get Started</a>
+                    <a href="{{ url_for('learn_more') }}" class="btn btn-secondary">Learn More</a>
                 </div>
             </div>
         </section>
@@ -46,17 +46,17 @@
         <section id="services">
             <div class="services-container">
                 <div class="service-box">
-                    <img src="{{ url_for('images', filename='pill reiminder homepg.jpg') }}" alt="Pill Reminders">
+                    <img src="{{ url_for('static', filename='images/pill reiminder homepg.jpg') }}" alt="Pill Reminders">
                     <h3>Pill Reminders</h3>
                     <p>Set and manage reminders for daily medications easily.</p>
                 </div>
                 <div class="service-box">
-                    <img src="{{ url_for('images', filename='virtualassisstant-homepg.jpg') }}" alt="Virtual Assistant">
+                    <img src="{{ url_for('static', filename='images/virtualassisstant-homepg.png') }}" alt="Virtual Assistant">
                     <h3>Virtual Assistant</h3>
                     <p>Get assistance with everyday tasks and queries.</p>
                 </div>
                 <div class="service-box">
-                    <img src="{{ url_for('images', filename='community-homepg.jpg') }}" alt="Community Updates">
+                    <img src="{{ url_for('static', filename='images/community-homepg.jpg') }}" alt="Community Updates">
                     <h3>Community Updates</h3>
                     <p>Stay updated on the latest happenings in your community.</p>
                 </div>
@@ -68,17 +68,17 @@
             <h2>Why Choose Us?</h2>
             <div class="global-offer-container">
                 <div class="offer-box">
-                    <img src="{{ url_for('images', filename='voicecommanf-homepg.webp') }}" alt="Voice Command">
+                    <img src="{{ url_for('static', filename='images/voicecommanf-homepg.webp') }}" alt="Voice Command">
                     <h4>Voice Command</h4>
                     <p>Control your app hands-free with voice commands.</p>
                 </div>
                 <div class="offer-box">
-                    <img src="{{ url_for('images', filename='reminders-homepg.jpg') }}" alt="Reminders">
+                    <img src="{{ url_for('static', filename='images/reminders-homepg.jpg') }}" alt="Reminders">
                     <h4>Reliable Reminders</h4>
                     <p>Never miss your pills with our smart reminder system.</p>
                 </div>
                 <div class="offer-box">
-                    <img src="{{ url_for('images', filename='communitysupport-homepg.jpg') }}" alt="Community Support">
+                    <img src="{{ url_for('static', filename='images/communitysupport-homepg.jpg') }}" alt="Community Support">
                     <h4>Community Support</h4>
                     <p>Connect with a supportive community for advice and help.</p>
                 </div>
@@ -90,17 +90,17 @@
             <h2>Our Commitments</h2>
             <div class="commitments-container">
                 <div class="commitment-box">
-                    <img src="{{ url_for('images', filename='team-homepg.jpg') }}" alt="Support">
+                    <img src="{{ url_for('static', filename='images/team-homepg.jpg') }}" alt="Support">
                     <h4>24/7 Support</h4>
                     <p>Our team is always here to assist you.</p>
                 </div>
                 <div class="commitment-box">
-                    <img src="{{ url_for('images', filename='secure-homepg.webp') }}" alt="Secure">
+                    <img src="{{ url_for('static', filename='images/secure-homepg.webp') }}" alt="Secure">
                     <h4>Secure</h4>
                     <p>Your data and privacy are our top priorities.</p>
                 </div>
                 <div class="commitment-box">
-                    <img src="{{ url_for('images', filename='userfriendly-homepg.jpg') }}" alt="User Friendly">
+                    <img src="{{ url_for('static', filename='images/userfriendly-homepg.jpg') }}" alt="User Friendly">
                     <h4>User-Friendly</h4>
                     <p>Designed with simplicity and accessibility in mind.</p>
                 </div>
@@ -122,9 +122,9 @@
             <div class="footer-container">
                 <p>&copy; 2024 Elderly Care App</p>
                 <div class="social-icons">
-                    <img src="{{ url_for('images', filename='facebook-homepg.png') }}" alt="Facebook">
-                    <img src="{{ url_for('images', filename='twitter-homepg.png') }}" alt="Twitter">
-                    <img src="{{ url_for('images', filename='insta-homepg.webp') }}" alt="Instagram">
+                    <img src="{{ url_for('static', filename='images/facebook-homepg.png') }}" alt="Facebook">
+                    <img src="{{ url_for('static', filename='images/twitter-hommepg.png') }}" alt="Twitter">
+                    <img src="{{ url_for('static', filename='images/insta-homepg.webp') }}" alt="Instagram">
                 </div>
             </div>
         </footer>
