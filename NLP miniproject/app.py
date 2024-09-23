@@ -95,6 +95,10 @@ def signin():
 def learn_more():
     return render_template('learn-more.html')
 
+@app.route('/elderly-care-app')
+def elderly_care_app():
+    return render_template('elderly-care-app.html')
+
 client = vonage.Client(key="4a6b3b47", secret="CCrFDJrdWOat7jhG")
 sms = vonage.Sms(client)
 
@@ -240,7 +244,7 @@ def signup():
         signup_user(username, password, email)
         session['success'] = "Signup successful!"  # Set a session variable
         home()
-        return redirect('/elder-care-app')  # Redirect to the login page
+        return redirect('/elderly-care-app')  # Redirect to the login page
     return render_template('signup.html', error=None, success=None)
 
 
@@ -253,7 +257,7 @@ def login():
         if user:
             session['success'] = "Login successful!"  # Set a session variable
             home()
-            return redirect('/elder-care-app')  # Redirect to the app page
+            return redirect('/elderly-care-app')  # Redirect to the app page
         else:
             return render_template('login.html', error="Invalid credentials")
     return render_template('login.html', error=None)
