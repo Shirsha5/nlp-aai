@@ -53,6 +53,7 @@ header h1 {
 }
 
 #voice-command-container {
+  background-color: #5C7AEA;
   text-align: center;
   margin: 30px 0;
 }
