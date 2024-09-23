@@ -116,6 +116,7 @@ h2 {
   animation: pulse 2s infinite;
 }
 
+
 /* Button Animation */
 @keyframes pulse {
   0% {
