@@ -89,7 +89,11 @@ function speak(message) {
     if ('speechSynthesis' in window) {
         const utterance = new SpeechSynthesisUtterance(message);
         
-        // Wait until voices are loaded
+        // Ensure voices are populated before speaking
+        if (voices.length === 0) {
+            voices = window.speechSynthesis.getVoices(); // Populate voices immediately
+        }
+
         if (voices.length === 0) {
             console.error('No voices available.');
             return;
@@ -112,6 +116,7 @@ function speak(message) {
         alert('Speech Synthesis API is not supported in this browser.');
     }
 }
+
 
 function addPillToTimeline(command) {
     const pillInfo = command.replace('set reminder to take ', '').replace(' at', '').trim(); // Extract the pill info from command
