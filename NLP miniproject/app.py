@@ -13,9 +13,28 @@ from datetime import datetime
 import time
 import os
 import pytz
+from gtts import gTTS
+from pydub import AudioSegment
+from pydub.playback import play
 
+import pygame
+import subprocess
+
+
+ 
 app = Flask(__name__) 
 
+def speak_no(text):
+    tts = gTTS(text=text, lang='en')
+    audio_file = f"output_{int(time.time())}.mp3"  # Unique filename
+    tts.save(audio_file)
+    subprocess.Popen(["start", "/min", "wmplayer", audio_file], shell=True)
+    #os.system(f"start /min {audio_file}")
+    
+def speak(text):
+    engine = pyttsx3.init()  # Initialize the TTS engine
+    engine.say(text)  # Queue the text to be spoken
+    engine.runAndWait()
 
 @app.route('/')
 def home():
@@ -57,7 +76,7 @@ def reinitialize_engine():
     engine = pyttsx3.init()  # Reinitialize the engine
 '''
 
-
+''' new
 # Text-to-speech engine initialization
 engine = pyttsx3.init()
 speech_queue = Queue()
@@ -74,14 +93,16 @@ def process_queue():
         text = speech_queue.get()
         engine.say(text)
         engine.runAndWait()
+        '''
 '''
 
 @app.route('/community-updates')
 def community_updates():
     return render_template('community-updates.html')
-@app.route('/')
-def home():
-    return render_template('elderly-care-app.html')'''
+    '''
+@app.route('/elderly-care-app')
+def application():
+    return render_template('elderly-care-app.html')
 
 @app.route('/pill-reminder')
 def pill_reminder():
@@ -94,10 +115,6 @@ def signin():
 @app.route('/learn-more')
 def learn_more():
     return render_template('learn-more.html')
-
-@app.route('/elderly-care-app')
-def elderly_care_app():
-    return render_template('elderly-care-app.html')
 
 client = vonage.Client(key="4a6b3b47", secret="CCrFDJrdWOat7jhG")
 sms = vonage.Sms(client)
@@ -244,7 +261,7 @@ def signup():
         signup_user(username, password, email)
         session['success'] = "Signup successful!"  # Set a session variable
         home()
-        return redirect('/elderly-care-app')  # Redirect to the login page
+        return redirect('/elder-care-app')  # Redirect to the login page
     return render_template('signup.html', error=None, success=None)
 
 
@@ -257,7 +274,7 @@ def login():
         if user:
             session['success'] = "Login successful!"  # Set a session variable
             home()
-            return redirect('/elderly-care-app')  # Redirect to the app page
+            return redirect('/elder-care-app')  # Redirect to the app page
         else:
             return render_template('login.html', error="Invalid credentials")
     return render_template('login.html', error=None)
@@ -431,8 +448,8 @@ def process_voice():
                 {
                     "from": "Elderly Care App SOS Team",
 
-                    "to": "919004128510",
-                    "text": "SOSOSOS Help im under the water",   # DONT FORGET TO CHANGE    
+                    "to": "918668655668",
+                    "text": "ALERT FROM PILLPAL! YOUR LOVED ONE NEEDS IMMEDIATE ATTENTION!!",   # DONT FORGET TO CHANGE    
                 }
             )
             
@@ -476,7 +493,7 @@ def process_voice():
 
         # Print and speak the response message
         print(f"Response Message: {response_message}")  # Debugging line
-        speak(response_message)
+      #  speak(response_message)
     
     except Exception as e:
         print(f"Error processing voice command: {e}")
