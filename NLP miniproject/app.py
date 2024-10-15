@@ -44,56 +44,6 @@ def home():
 def images(filename):
     return send_from_directory('static', filename)
 
-
-'''
-# Text-to-speech engine initialization
-engine = pyttsx3.init()
-speech_queue = Queue()
-speech_lock = Lock()
-
-# Helper functions for text-to-speech (TTS)
-def process_queue():
-    while not speech_queue.empty():
-        text = speech_queue.get()
-        engine.say(text)
-        try:
-            engine.runAndWait()
-        except Exception as e:
-            print(f"Error in TTS engine: {e}")
-            engine.endLoop()  # End any stuck loops
-            engine.startLoop(False)  # Restart the loop
-
-def speak(text):
-    with speech_lock:
-        speech_queue.put(text)
-        if not engine._inLoop:
-            # Safely start the process_queue in a thread
-            Thread(target=process_queue).start()
-
-def reinitialize_engine():
-    global engine
-    engine.endLoop()  # End any existing loop
-    engine = pyttsx3.init()  # Reinitialize the engine
-'''
-
-''' new
-# Text-to-speech engine initialization
-engine = pyttsx3.init()
-speech_queue = Queue()
-speech_lock = Lock()
-
-def speak(text):
-    with speech_lock:
-        speech_queue.put(text)
-        if not engine._inLoop:
-            Thread(target=process_queue).start()
-
-def process_queue():
-    while not speech_queue.empty():
-        text = speech_queue.get()
-        engine.say(text)
-        engine.runAndWait()
-        '''
 '''
 
 @app.route('/community-updates')
@@ -152,9 +102,9 @@ def init_db():
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS pill_reminders (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                pill_id INTEGER NOT NULL,
+                pill_id INTEGER,
                 pill_name TEXT NOT NULL,
-                reminder_date TEXT NOT NULL,
+                reminder_date TEXT ,
                 reminder_time TEXT NOT NULL,
                 FOREIGN KEY (pill_name) REFERENCES pills (pill_name),
                 FOREIGN KEY (pill_id) REFERENCES pills (id)
@@ -298,15 +248,15 @@ def add_pill_reminder(pill_name, reminder_time):
     conn.commit()
     conn.close()
     
-    '''
+    
 #-------------------------- TEST
-def manual_add_reminder(pill_name, reminder_time):
+'''def manual_add_reminder(pill_name, reminder_time):
     # Call the add_pill_reminder function to insert directly
     add_pill_reminder(pill_name, reminder_time)
 
 # Example usage
 manual_add_reminder("Aspirin", "11:04 PM")
-manual_add_reminder("Vitamin D", "08:30 AM")
+manual_add_reminder("Vitamin D", "08:50 AM")
 '''
 
 
