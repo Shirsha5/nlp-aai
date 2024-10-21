@@ -11,7 +11,7 @@ import torch
 from transformers import BlenderbotForConditionalGeneration, BlenderbotTokenizer, pipeline
 from fuzzywuzzy import fuzz  # for fuzzy matching
 
-api_key = "LXH99UDw6IEC70UrgJtnr2pMDXxH72j4jJkdJ7Nb"
+api_key = "EdOLHO85EdgL29kyULi3HCbmblyxvSq926w01Ga6"
 
 
 summarizer = pipeline("summarization")
