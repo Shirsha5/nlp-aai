@@ -1,43 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Community Updates</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='community-updates.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Updates</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- CSS for card and images -->
+    <style>
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .community-heading {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .community-dialog {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Community Updates</h1>
-      <p>Manage updates for the community. Add, edit, or remove updates as needed.</p>
-    </div>
-    
-    <div class="update-input">
-      <input type="text" placeholder="Update Title" class="input-field js-title-input">
-      <textarea placeholder="Update Description" class="textarea-field js-description-input"></textarea>
-      <button class="btn add-btn" onclick="addUpdate()">Add Update</button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('templates', filename='elderly-care-app.html') }}">PillPall</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('templates', filename='elderly-care-app.html') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('templates', filename='pill-reminders.html') }}">Pill Reminders</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" href="{{ url_for('templates', filename='community-updates.html') }}">Community</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('templates', filename='login.html') }}">Log-in</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5">
+        <!-- Community Updates Heading -->
+        <h1 class="community-heading">Community Updates</h1>
+        
+        <!-- Subheading/Meaningful Dialog -->
+        <p class="community-dialog">
+            Stay connected to your community. Receive the latest community updates such as the following events. Whether it's staying active, taking care of your mental health, or keeping an eye on your physical well-being, we're here to help you stay informed and engaged.
+        </p>
+        
+        <!-- Cards Row -->
+        <div class="row">
+            <!-- Weekly Yoga Sessions -->
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="images/yoga-sessions.jpeg" class="card-img-top" alt="Weekly Yoga Sessions">
+                    <div class="card-body">
+                        <h5 class="card-title">Weekly Yoga Sessions</h5>
+                        <p class="card-text">Join us every Monday morning for a rejuvenating yoga session. Suitable for all fitness levels!</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mental Health Tips -->
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="images/mental-health.jpeg" class="card-img-top" alt="Mental Health Tips">
+                    <div class="card-body">
+                        <h5 class="card-title">Mental Health Tips</h5>
+                        <p class="card-text">Our experts provide weekly mental health tips to help you stay calm, happy, and stress-free.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Free Blood Checkup Camp -->
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="images/checkup.jpeg" class="card-img-top" alt="Free Blood Checkup">
+                    <div class="card-body">
+                        <h5 class="card-title">Free Blood Checkup Camp</h5>
+                        <p class="card-text">Join our free blood checkup camp this weekend. Open to all community members. Stay healthy!</p>
+                        <a href="#" class="btn btn-primary">Register Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="updates-list js-updates-list">
-      <!-- Dynamically generated updates will appear here -->
-      <table>
-        <thead>
-          <tr>
-            <th>Update Title</th>
-            <th>Update Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="updates-table">
-          <!-- Updates will be inserted dynamically here -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  
-  <script src="{{ url_for('static', filename='community-updates.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-IweAe/iDdBflBLsgpo5XTZxMXZ3zIFbYJs5n/IdbxqVlbmFw5tVR69yu5cruWWgQ" crossorigin="anonymous"></script>
 </body>
 </html>
